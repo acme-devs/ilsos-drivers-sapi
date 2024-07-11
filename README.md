@@ -63,15 +63,34 @@ Verify the address with the USPS database.
 
 ```mermaid
 sequenceDiagram
-    participant dotcom
-    participant iframe
-    participant viewscreen
-    dotcom->>iframe: loads html w/ iframe url
-    iframe->>viewscreen: request template
-    viewscreen->>iframe: html & javascript
-    iframe->>dotcom: iframe ready
-    dotcom->>iframe: set mermaid data on iframe
-    iframe->>iframe: render mermaid
+    autonumber
+    participant ui as UI
+    participant api as ilsos-drivers-sapi
+    participant db2 as DB2
+    participant qas as QAS
+
+    ui->>api:GET/drivers/address-verification <br>Input: idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
+    note over db2:DP_ADDRCHG_TRANS
+    api-->>api:Dataweave - format records for mainframe db2<BR> DP_ADDRCHG_TRANS TABLE.
+    api-->>db2: Update
+    api-->>api:Log response. If db2 access error, then send email to admin
+    alt Error Scenario 
+        api-->ui: Status 400 , detail error message
+    end
+    api-->>api:Dataweave - format records for QAS.
+    api-->>qas:Address validation.
+    qas-->>api:Retrieve response.
+    
+    api-->>api:Log response. If QAS access error, then send email to admin
+    alt Success Scenario 
+        api-->ui: Status 200 ,response from QAS
+    end
+    alt Error Scenario 
+        api-->ui: Status 400 , detail error message
+    end
+    
+    
+
 ```
 
 ### GET /v1/drivers/id-verification
@@ -79,15 +98,24 @@ Verify the drivers license or id.
 
 ```mermaid
 sequenceDiagram
-    participant dotcom
-    participant iframe
-    participant viewscreen
-    dotcom->>iframe: loads html w/ iframe url
-    iframe->>viewscreen: request template
-    viewscreen->>iframe: html & javascript
-    iframe->>dotcom: iframe ready
-    dotcom->>iframe: set mermaid data on iframe
-    iframe->>iframe: render mermaid
+    autonumber
+    participant ui as UI
+    participant api as ilsos-drivers-sapi
+    participant mainframe as MainFrame
+    
+    ui->>api:GET/drivers/id-verification <br>Input: dl,Id and last4ssn
+    note over mainframe:CICS:dsf02gOut
+    api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut).
+    api-->>mainframe:Validate input data.
+    mainframe-->>api:Retrieve CICS code.
+    api-->>api:Log response. If mainframe access error, then send email to admin
+    alt Success Scenario 
+        api-->ui: Status 200
+    end
+    alt Error Scenario 
+        api-->ui: Status 400 
+    end
+    
 ```
 
 ### POST /v1/drivers/transaction
@@ -95,15 +123,28 @@ Register a new transaction for the process of driver address update.
 
 ```mermaid
 sequenceDiagram
-    participant dotcom
-    participant iframe
-    participant viewscreen
-    dotcom->>iframe: loads html w/ iframe url
-    iframe->>viewscreen: request template
-    viewscreen->>iframe: html & javascript
-    iframe->>dotcom: iframe ready
-    dotcom->>iframe: set mermaid data on iframe
-    iframe->>iframe: render mermaid
+    autonumber
+    participant ui as UI
+    participant api as ilsos-drivers-sapi
+    participant db2 as DB2
+    
+    ui->>api:POST/drivers/transaction <br>Input: IP address and web session
+    note over db2:DP_ADDRCHG_TRANS
+    
+    api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
+    api-->>db2: Insert or Update 
+    
+    db2-->>api: Idtransaction
+    api-->>api:Log response. If db2 access error, then send email to admin
+    alt Success Scenario 
+        api-->ui: Status 201 , idtransaction
+    end
+    alt Error Scenario 
+        api-->ui: Status 400 , detail error message
+    end
+    
+    
+
 ```
 
 ### PUT /v1/drivers/transaction
