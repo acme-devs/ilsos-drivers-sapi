@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
+		<artifactId>ilsos-pom</artifactId>
+		<version>1.0.20</version>
+		<relativePath/>
+	</parent>
+
+	<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
+	<artifactId>ilsos-drivers-sapi-app</artifactId>
+	<version>1.0.1</version>
+	<packaging>mule-application</packaging>
+
+	<name>ilsos-drivers-sapi</name>
+	<description>Mulesoft Drivers System API</description>
+
+	<properties>
+		<!-- Exchange documentation 
+		<fields key="sourceCode">https://github.com/jpontdia/ilsos-core</fields>
+		<categories key="Asset type">Configuration</categories>-->
+		<tags>Drivers, CICS, DB2, sapi</tags>
+	</properties>
+
+	<dependencies>
+
+		<!-- Common configurations -->
+		<dependency>
+			<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
+			<artifactId>ilsos-commons</artifactId>
+			<version>1.0.1</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+	</dependencies>
+</project>
