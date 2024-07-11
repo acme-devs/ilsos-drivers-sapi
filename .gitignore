@@ -154,3 +154,4 @@ target/
 # Development standards    #
 # ------------------------ #
 exchange-docs/home.md
+exchange-docs/media/*.*
