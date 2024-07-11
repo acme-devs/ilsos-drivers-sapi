@@ -15,7 +15,7 @@ This service implements the next specification: https://anypoint.mulesoft.com/ex
 The service provides the next endpoints:
 
 ### PATCH /v1/drivers
-Updates the driver address
+Updates the driver address.
 
 The next diagram shows the business sequence of messages or events exchanged between the several backend systems.
 
@@ -33,7 +33,71 @@ sequenceDiagram
 ```
 
 ### GET /v1/drivers/address-verification
-Verify the address with the USPS database
+Verify the address with the USPS database.
+
+```mermaid
+sequenceDiagram
+    participant dotcom
+    participant iframe
+    participant viewscreen
+    dotcom->>iframe: loads html w/ iframe url
+    iframe->>viewscreen: request template
+    viewscreen->>iframe: html & javascript
+    iframe->>dotcom: iframe ready
+    dotcom->>iframe: set mermaid data on iframe
+    iframe->>iframe: render mermaid
+```
+
+### GET /v1/drivers/id-verification
+Verify the drivers license or id.
+
+```mermaid
+sequenceDiagram
+    participant dotcom
+    participant iframe
+    participant viewscreen
+    dotcom->>iframe: loads html w/ iframe url
+    iframe->>viewscreen: request template
+    viewscreen->>iframe: html & javascript
+    iframe->>dotcom: iframe ready
+    dotcom->>iframe: set mermaid data on iframe
+    iframe->>iframe: render mermaid
+```
+
+### POST /v1/drivers/transaction
+Register a new transaction for the process of driver address update.
+
+```mermaid
+sequenceDiagram
+    participant dotcom
+    participant iframe
+    participant viewscreen
+    dotcom->>iframe: loads html w/ iframe url
+    iframe->>viewscreen: request template
+    viewscreen->>iframe: html & javascript
+    iframe->>dotcom: iframe ready
+    dotcom->>iframe: set mermaid data on iframe
+    iframe->>iframe: render mermaid
+```
+
+### PUT /v1/drivers/transaction
+Updates the information related with a transaction for the process of driver address update.
+
+```mermaid
+sequenceDiagram
+    participant dotcom
+    participant iframe
+    participant viewscreen
+    dotcom->>iframe: loads html w/ iframe url
+    iframe->>viewscreen: request template
+    viewscreen->>iframe: html & javascript
+    iframe->>dotcom: iframe ready
+    dotcom->>iframe: set mermaid data on iframe
+    iframe->>iframe: render mermaid
+```
+
+### GET /v1/drivers/voter-registration
+Get the address registered for a voter.
 
 ```mermaid
 sequenceDiagram
