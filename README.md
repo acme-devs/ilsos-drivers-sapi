@@ -4,10 +4,8 @@
 
 Drivers System API
 
-This service implements the next specification: https://anypoint.mulesoft.com/exchange/0fa744b1-1284-46c5-b23c-0eb98ea787e3/ilsos-drivers-sapi/minor/1.0/
-
-
 ## Table of contents
+1. [Description](#description)
 1. [Endpoints](#endpoints)
     1. [PATCH /v1/drivers](#patch-v1drivers)
     1. [GET /v1/drivers/address-verification](#get-v1driversaddress-verification)
@@ -15,6 +13,14 @@ This service implements the next specification: https://anypoint.mulesoft.com/ex
     1. [POST /v1/drivers/transaction](#post-v1driverstransaction)
     1. [PUT /v1/drivers/transaction](#put-v1driverstransaction)
     1. [GET /v1/drivers/voter-registration](#get-v1driversvoter-registration)
+
+## Description
+The API provides the backend services for the Drivers Address Change business case. The next diagram shows the architecture
+
+![architecture](./exchange-docs/media/architecture.png)
+
+This service implements the next specification: https://anypoint.mulesoft.com/exchange/0fa744b1-1284-46c5-b23c-0eb98ea787e3/ilsos-drivers-sapi/minor/1.0/
+
 ## Endpoints
 The service provides the next endpoints:
 
