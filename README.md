@@ -31,16 +31,32 @@ The next diagram shows the business sequence of messages or events exchanged bet
 
 ```mermaid
 sequenceDiagram
-    participant dotcom
-    participant iframe
-    participant viewscreen
-    dotcom->>iframe: loads html w/ iframe url
-    iframe->>viewscreen: request template
-    viewscreen->>iframe: html & javascript
-    iframe->>dotcom: iframe ready
-    dotcom->>iframe: set mermaid data on iframe
-    iframe->>iframe: render mermaid
-```
+    autonumber
+    participant ui as UI
+    participant api as ilsos-drivers-sapi
+    participant db2 as DB2
+    participant mainframe as MainFrame
+
+    ui->>api:PATCH/drivers <br>Input:idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
+    note over db2:DP_ADDRCHG_TRANS
+    note over mainframe:CICS:dsf02gOut
+    api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
+    api-->>db2:Update
+    api-->>api:Log response. If db2 access error, then send email to admin
+    alt Error Scenario 
+        api-->ui: Status 400 , detail error message
+    end
+    api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut)
+    api-->>mainframe:Update driver record
+    mainframe-->>api:Retrieve CICS code.
+    api-->>api:Log response. If mainframe access error, then send email to admin
+    alt Success Scenario 
+        api-->ui: Status 200 
+    end
+    alt Error Scenario 
+        api-->ui: Status 400 , error from CICS
+    end
+  ```
 
 ### GET /v1/drivers/address-verification
 Verify the address with the USPS database.
