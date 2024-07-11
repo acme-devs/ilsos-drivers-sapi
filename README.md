@@ -11,6 +11,10 @@ This service implements the next specification: https://anypoint.mulesoft.com/ex
 1. [Endpoints](#endpoints)
     1. [PATCH /v1/drivers](#patch-v1drivers)
     1. [GET /v1/drivers/address-verification](#get-v1driversaddress-verification)
+    1. [GET /v1/drivers/id-verification](#get-v1driversid-verification)
+    1. [POST /v1/drivers/transaction](#post-v1driverstransaction)
+    1. [PUT /v1/drivers/transaction](#put-v1driverstransaction)
+    1. [GET /v1/drivers/voter-registration](#get-v1driversvoter-registration)
 ## Endpoints
 The service provides the next endpoints:
 
