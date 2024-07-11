@@ -9,8 +9,8 @@ This service implements the next specification: https://anypoint.mulesoft.com/ex
 
 ## Table of contents
 1. [Endpoints](#endpoints)
-    1. [PATCH /v1/drivers](#patch--v1drivers)
-    1. [GET /v1/drivers](#GET--v1drivers-address-verification)
+    1. [PATCH /v1/drivers](#patch-v1drivers)
+    1. [GET /v1/drivers](#GET-v1drivers-address-verification)
 ## Endpoints
 The service provides the next endpoints:
 
