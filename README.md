@@ -9,15 +9,31 @@ This service implements the next specification: https://anypoint.mulesoft.com/ex
 
 ## Table of contents
 1. [Endpoints](#endpoints)
-
-
+    1. [PATCH /v1/drivers](#patch--v1drivers)
+    1. [GET /v1/drivers](#GET--v1drivers-address-verification)
 ## Endpoints
 The service provides the next endpoints:
 
-### PATCH  /v1/drivers
+### PATCH /v1/drivers
 Updates the driver address
 
 The next diagram shows the business sequence of messages or events exchanged between the several backend systems.
+
+```mermaid
+sequenceDiagram
+    participant dotcom
+    participant iframe
+    participant viewscreen
+    dotcom->>iframe: loads html w/ iframe url
+    iframe->>viewscreen: request template
+    viewscreen->>iframe: html & javascript
+    iframe->>dotcom: iframe ready
+    dotcom->>iframe: set mermaid data on iframe
+    iframe->>iframe: render mermaid
+```
+
+### GET /v1/drivers/address-verification
+Verify the address with the USPS database
 
 ```mermaid
 sequenceDiagram
