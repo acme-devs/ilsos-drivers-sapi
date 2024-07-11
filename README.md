@@ -19,7 +19,7 @@ The API provides the backend services for the Drivers Address Change business ca
 
 ![architecture](./exchange-docs/media/architecture.png)
 
-This service implements the next specification: https://anypoint.mulesoft.com/exchange/0fa744b1-1284-46c5-b23c-0eb98ea787e3/ilsos-drivers-sapi/minor/1.0/
+This service implements the next API specification: https://anypoint.mulesoft.com/exchange/0fa744b1-1284-46c5-b23c-0eb98ea787e3/ilsos-drivers-sapi/minor/1.0/
 
 ## Endpoints
 The service provides the next endpoints:
