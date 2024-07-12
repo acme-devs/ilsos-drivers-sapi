@@ -23,7 +23,7 @@ This service implements the next API specification: https://anypoint.mulesoft.co
 ## Endpoints
 The service provides the next endpoints:
 
-### PATCH /v1/drivers
+### POST /v1/address-update
 Updates the driver address.
 
 The next diagram shows the business sequence of messages or events exchanged between the several backend systems.
