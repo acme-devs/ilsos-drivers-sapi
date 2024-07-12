@@ -66,21 +66,12 @@ sequenceDiagram
     autonumber
     participant ui as UI
     participant api as ilsos-drivers-sapi
-    participant db2 as DB2
     participant qas as QAS
 
     ui->>api:GET/drivers/address-verification <br>Input: idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
-    note over db2:DP_ADDRCHG_TRANS
-    api-->>api:Dataweave - format records for mainframe db2<BR> DP_ADDRCHG_TRANS TABLE.
-    api-->>db2: Update
-    api-->>api:Log response. If db2 access error, then send email to admin
-    alt Error Scenario 
-        api-->ui: Status 400 , detail error message
-    end
     api-->>api:Dataweave - format records for QAS.
     api-->>qas:Address validation.
     qas-->>api:Retrieve response.
-    
     api-->>api:Log response. If QAS access error, then send email to admin
     alt Success Scenario 
         api-->ui: Status 200 ,response from QAS
@@ -88,9 +79,6 @@ sequenceDiagram
     alt Error Scenario 
         api-->ui: Status 400 , detail error message
     end
-    
-    
-
 ```
 
 ### GET /v1/drivers/id-verification
