@@ -156,13 +156,24 @@ Get the address registered for a voter.
 
 ```mermaid
 sequenceDiagram
-    participant dotcom
-    participant iframe
-    participant viewscreen
-    dotcom->>iframe: loads html w/ iframe url
-    iframe->>viewscreen: request template
-    viewscreen->>iframe: html & javascript
-    iframe->>dotcom: iframe ready
-    dotcom->>iframe: set mermaid data on iframe
-    iframe->>iframe: render mermaid
+    autonumber
+    participant ui as UI
+    participant api as ilsos-voters-sapi
+    participant db2 as DB2
+    
+    ui->>api:POST/voters/registration <br>Input: idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
+    note over db2:DS_BOE_XREF_EXISTS<br>DS_WEB_AVR
+    api-->>api:Dataweave - format records for db2<BR> DS_BOE_XREF_EXISTS STORED PROCEDURE<br>DS_WEB_AVR TABLE
+    api-->>db2: Execute and insert 
+    db2-->>api: voter info
+    api-->>api:Log response. If db2 access error, then send email to admin
+    alt Success Scenario 
+        api-->ui: Status 201 , idtransaction
+    end
+    alt Error Scenario 
+        api-->ui: Status 400 , detail error message
+    end
+    
+    
+
 ```
