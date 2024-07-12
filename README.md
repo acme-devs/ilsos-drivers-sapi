@@ -151,8 +151,8 @@ sequenceDiagram
     iframe->>iframe: render mermaid
 ```
 
-### GET /v1/drivers/voter-registration
-Get the address registered for a voter.
+### POST /v1/voters/voter-registration
+Register the address for a voter.
 
 ```mermaid
 sequenceDiagram
