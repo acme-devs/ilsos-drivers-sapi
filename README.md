@@ -7,7 +7,7 @@ Drivers System API
 ## Table of contents
 1. [Description](#description)
 1. [Endpoints](#endpoints)
-    1. [PATCH /v1/drivers](#patch-v1drivers)
+    1. [POST /v1/address-update](#patch-v1address-update)
     1. [GET /v1/drivers/id-verification](#get-v1driversid-verification)
     1. [POST /v1/drivers/transaction](#post-v1driverstransaction)
     1. [PUT /v1/drivers/transaction](#put-v1driverstransaction)
@@ -36,7 +36,7 @@ sequenceDiagram
     participant db2 as DB2
     participant mainframe as MainFrame
 
-    ui->>api:PATCH/drivers <br>Input:idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
+    ui->>api:POST/address-update <br>Input:idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
     note over db2:DP_ADDRCHG_TRANS
     note over mainframe:CICS:dsf02gOut
     api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
