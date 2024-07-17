@@ -59,8 +59,31 @@ sequenceDiagram
     end
   ```
 
+### GET /v1/drivers/address-verification
+Verify the drivers address.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant ui as UI
+    participant api as ilsos-drivers-sapi
+    participant qas as QAS
+
+    ui->>api:GET/drivers/address-verification <br>Input: idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
+    api-->>api:Dataweave - format records for QAS.
+    api-->>qas:Address validation.
+    qas-->>api:Retrieve response.
+    api-->>api:Log response. If QAS access error, then send email to admin
+    alt Success Scenario 
+        api-->ui: Status 200 ,response from QAS
+    end
+    alt Error Scenario 
+        api-->ui: Status 400 , detail error message
+    end
+```
+
 ### GET /v1/drivers/id-verification
-Verify the drivers license or id.
+Get drivers id from mainframe.
 
 ```mermaid
 sequenceDiagram
@@ -81,11 +104,10 @@ sequenceDiagram
     alt Error Scenario 
         api-->ui: Status 400 
     end
-    
 ```
 
 ### POST /v1/drivers/transaction
-Register a new transaction for the process of driver address update.
+Updates the information related with a transaction for the process of driver address update.
 
 ```mermaid
 sequenceDiagram
@@ -108,23 +130,4 @@ sequenceDiagram
     alt Error Scenario 
         api-->ui: Status 400 , detail error message
     end
-    
-    
-
-```
-
-### PUT /v1/drivers/transaction
-Updates the information related with a transaction for the process of driver address update.
-
-```mermaid
-sequenceDiagram
-    participant dotcom
-    participant iframe
-    participant viewscreen
-    dotcom->>iframe: loads html w/ iframe url
-    iframe->>viewscreen: request template
-    viewscreen->>iframe: html & javascript
-    iframe->>dotcom: iframe ready
-    dotcom->>iframe: set mermaid data on iframe
-    iframe->>iframe: render mermaid
 ```
