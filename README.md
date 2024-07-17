@@ -131,3 +131,51 @@ sequenceDiagram
         api-->ui: Status 400 , detail error message
     end
 ```
+### PUT /v1/drivers/transaction
+Updates the information related with a transaction for the process of driver address update.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant ui as UI
+    participant api as ilsos-drivers-sapi
+    participant db2 as DB2
+    
+    ui->>api:PUT/drivers/transaction <br>Input: IP address and web session
+    note over db2:DP_ADDRCHG_TRANS
+    
+    api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
+    api-->>db2: Insert or Update 
+    
+    db2-->>api: Idtransaction
+    api-->>api:Log response. If db2 access error, then send email to admin
+    alt Success Scenario 
+        api-->ui: Status 201 , idtransaction
+    end
+    alt Error Scenario 
+        api-->ui: Status 400 , detail error message
+    end
+```
+### GET /v1/drivers/voters-registration
+Gets the voters registration from db2.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant ui as UI
+    participant api as ilsos-drivers-sapi
+    participant db2 as DB2
+    
+    ui->>api:POST/voters/voters-registration <br>Input: idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
+    note over db2:DS_BOE_XREF_EXISTS<br>DS_WEB_AVR
+    api-->>api:Dataweave - format records for db2<BR> DS_BOE_XREF_EXISTS STORED PROCEDURE<br>DS_WEB_AVR TABLE
+    api-->>db2: Execute and insert 
+    db2-->>api: voter info
+    api-->>api:Log response. If db2 access error, then send email to admin
+    alt Success Scenario 
+        api-->ui: Status 201 , voter info
+    end
+    alt Error Scenario 
+        api-->ui: Status 400 , detail error message
+    end
+```
