@@ -178,4 +178,4 @@ sequenceDiagram
     alt Error Scenario 
         api-->ui: Status 400 , detail error message
     end
-```
+
