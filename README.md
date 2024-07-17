@@ -25,7 +25,7 @@ This service implements the next API specification: https://anypoint.mulesoft.co
 ## Endpoints
 The service provides the next endpoints:
 
-### POST /v1/address-update
+### PATCH /v1/drivers
 Updates the driver address.
 
 The next diagram shows the business sequence of messages or events exchanged between the several backend systems.
@@ -38,7 +38,7 @@ sequenceDiagram
     participant db2 as DB2
     participant mainframe as MainFrame
 
-    ui->>api:POST/address-update <br>Input:idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
+    ui->>api:PATCH/drivers <br>Input:idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
     note over db2:DP_ADDRCHG_TRANS
     note over mainframe:CICS:dsf02gOut
     api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
