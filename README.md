@@ -12,8 +12,8 @@ Drivers System API
     1. [GET /v1/drivers/id-verification](#get-v1driversid-verification)
     1. [POST /v1/drivers/transaction](#post-v1driverstransaction)
     1. [PUT /v1/drivers/transaction](#put-v1driverstransaction)
-    1. [GET /v1/drivers/voter-registration](#get-v1driversvoter-registration)
-       
+    1. [GET /v1/drivers/transaction](#get-v1driversvoterregistration)
+           
 
 ## Description
 The API provides the backend services for the Drivers Address Change business case. The next diagram shows the architecture
