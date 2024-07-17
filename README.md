@@ -12,7 +12,7 @@ Drivers System API
     1. [GET /v1/drivers/id-verification](#get-v1driversid-verification)
     1. [POST /v1/drivers/transaction](#post-v1driverstransaction)
     1. [PUT /v1/drivers/transaction](#put-v1driverstransaction)
-    1. [GET /v1/drivers/transaction](#put-v1driverstransaction)
+    1. [GET /v1/drivers/voters-registration](#get-v1driversvoterstransaction)
            
 
 ## Description
@@ -166,16 +166,14 @@ sequenceDiagram
     participant api as ilsos-drivers-sapi
     participant db2 as DB2
     
-    ui->>api:PUT/drivers/transaction <br>Input: IP address and web session
-    note over db2:DP_ADDRCHG_TRANS
-    
-    api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
-    api-->>db2: Insert or Update 
-    
-    db2-->>api: Idtransaction
+    ui->>api:GET/drivers/voters-registration <br>Input: idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
+    note over db2:DS_BOE_XREF_EXISTS<br>DS_WEB_AVR
+    api-->>api:Dataweave - format records for db2<BR> DS_BOE_XREF_EXISTS STORED PROCEDURE<br>DS_WEB_AVR TABLE
+    api-->>db2: Execute and insert 
+    db2-->>api: voter info
     api-->>api:Log response. If db2 access error, then send email to admin
     alt Success Scenario 
-        api-->ui: Status 201 , idtransaction
+        api-->ui: Status 201 , voter info
     end
     alt Error Scenario 
         api-->ui: Status 400 , detail error message
