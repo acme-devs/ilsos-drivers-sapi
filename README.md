@@ -7,7 +7,7 @@ Drivers System API
 ## Table of contents
 1. [Description](#description)
 1. [Endpoints](#endpoints)
-    1. [POST /v1/drivers](#post-v1driversaddress-update)
+    1. [POST /v1/drivers/address-update](#post-v1driversaddress-update)
     1. [GET /v1/drivers/address-verification](#get-v1driversaddress-verification)
     1. [GET /v1/drivers/id-validation](#get-v1driversid-validation)
     1. [POST /v1/drivers/transaction](#post-v1driverstransaction)
