@@ -37,7 +37,8 @@ sequenceDiagram
     participant db2 as DB2
     participant mainframe as MainFrame
 
-    ui->>api:POST/drivers/address-update <br>Input:vin,dept,addrverifification(boolean)<br>dl,Id,last4ssn,DOB<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVD
+    ui->>api:POST/drivers/address-update <br>vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,DOB<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
+
     note over db2:DP_ADDRCHG_TRANS
     note over mainframe:CICS:dsf02gOut
     api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
@@ -93,7 +94,8 @@ sequenceDiagram
     participant api as ilsos-drivers-sapi
     participant db2 as DB2
     
-    ui->>api:PUT/drivers/address-update-transaction <br>Input: vin,dept,addrverifification(boolean)<br>dl,Id,last4ssn,DOB<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVD
+    ui->>api:PUT/drivers/address-update-transaction <br>vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,DOB<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
+
     note over db2:DP_ADDRCHG_TRANS
     
     api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
