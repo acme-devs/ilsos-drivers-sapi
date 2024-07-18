@@ -93,7 +93,7 @@ sequenceDiagram
     participant api as ilsos-drivers-sapi
     participant db2 as DB2
     
-    ui->>api:PUT/drivers/address-update-transaction <br>Input: IP address and web session
+    ui->>api:PUT/drivers/address-update-transaction <br>Input: vin,dept,addrverifification(boolean)<br>dl,Id,last4ssn,DOB<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVD
     note over db2:DP_ADDRCHG_TRANS
     
     api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
