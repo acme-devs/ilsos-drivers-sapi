@@ -8,7 +8,6 @@ Drivers System API
 1. [Description](#description)
 1. [Endpoints](#endpoints)
     1. [POST /v1/drivers/address-update](#post-v1driversaddress-update)
-    1. [GET /v1/drivers/address-verification](#get-v1driversaddress-verification)
     1. [GET /v1/drivers/id-validation](#get-v1driversid-validation)
     1. [POST /v1/drivers/transaction](#post-v1driverstransaction)
     1. [PUT /v1/drivers/transaction](#put-v1driverstransaction)
@@ -59,28 +58,6 @@ sequenceDiagram
     end
   ```
 
-### GET /v1/drivers/address-verification
-Verify the drivers address.
-
-```mermaid
-sequenceDiagram
-    autonumber
-    participant ui as UI
-    participant api as ilsos-drivers-sapi
-    participant qas as QAS
-
-    ui->>api:GET/drivers/address-verification <br>Input: idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
-    api-->>api:Dataweave - format records for QAS.
-    api-->>qas:Address validation.
-    qas-->>api:Retrieve response.
-    api-->>api:Log response. If QAS access error, then send email to admin
-    alt Success Scenario 
-        api-->ui: Status 200 ,response from QAS
-    end
-    alt Error Scenario 
-        api-->ui: Status 400 , detail error message
-    end
-```
 
 ### GET /v1/drivers/id-validation
 Get drivers id from mainframe.
