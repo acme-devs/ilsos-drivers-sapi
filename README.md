@@ -94,7 +94,7 @@ sequenceDiagram
     participant api as ilsos-drivers-sapi
     participant db2 as DB2
     
-    ui->>api:PUT/drivers/address-update-transaction <br>vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,DOB<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
+    ui->>api:PUT/drivers/address-update-transaction <br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,DOB<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
 
     note over db2:DP_ADDRCHG_TRANS
     
