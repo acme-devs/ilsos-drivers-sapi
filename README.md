@@ -8,10 +8,10 @@ Drivers System API
 1. [Description](#description)
 1. [Endpoints](#endpoints)
     1. [POST /v1/drivers/address-update](#post-v1driversaddress-update)
-    1. [GET /v1/drivers/id-validation](#get-v1driversid-validation)
-    1. [POST /v1/drivers/transaction](#post-v1driverstransaction)
     1. [PUT /v1/drivers/transaction](#put-v1driverstransaction)
-    1. [GET /v1/drivers/voters-registration](#get-v1driversvoterstransaction)
+    1. [GET /v1/drivers/id-validation](#get-v1driversid-validation)
+    
+    
            
 
 ## Description
@@ -83,7 +83,7 @@ sequenceDiagram
     end
 ```
 
-### POST /v1/drivers/transaction
+### PUT /v1/drivers/address-update-transaction
 Updates the information related with a transaction for the process of driver address update.
 
 ```mermaid
@@ -93,7 +93,7 @@ sequenceDiagram
     participant api as ilsos-drivers-sapi
     participant db2 as DB2
     
-    ui->>api:POST/drivers/transaction <br>Input: IP address and web session
+    ui->>api:PUT/drivers/address-update-transaction <br>Input: IP address and web session
     note over db2:DP_ADDRCHG_TRANS
     
     api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
@@ -103,54 +103,6 @@ sequenceDiagram
     api-->>api:Log response. If db2 access error, then send email to admin
     alt Success Scenario 
         api-->ui: Status 201 , idtransaction
-    end
-    alt Error Scenario 
-        api-->ui: Status 400 , detail error message
-    end
-```
-### PUT /v1/drivers/transaction
-Updates the information related with a transaction for the process of driver address update.
-
-```mermaid
-sequenceDiagram
-    autonumber
-    participant ui as UI
-    participant api as ilsos-drivers-sapi
-    participant db2 as DB2
-    
-    ui->>api:PUT/drivers/transaction <br>Input: IP address and web session
-    note over db2:DP_ADDRCHG_TRANS
-    
-    api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
-    api-->>db2: Insert or Update 
-    
-    db2-->>api: Idtransaction
-    api-->>api:Log response. If db2 access error, then send email to admin
-    alt Success Scenario 
-        api-->ui: Status 201 , idtransaction
-    end
-    alt Error Scenario 
-        api-->ui: Status 400 , detail error message
-    end
-```
-### GET /v1/drivers/transaction
-Gets the voters registration from db2
-
-```mermaid
-sequenceDiagram
-    autonumber
-    participant ui as UI
-    participant api as ilsos-drivers-sapi
-    participant db2 as DB2
-    
-    ui->>api:GET/drivers/voters-registration <br>Input: idTransaction,dl,Id,last4ssn,DOB<br>Street,City,State,ZIP and County
-    note over db2:DS_BOE_XREF_EXISTS<br>DS_WEB_AVR
-    api-->>api:Dataweave - format records for db2<BR> DS_BOE_XREF_EXISTS STORED PROCEDURE<br>DS_WEB_AVR TABLE
-    api-->>db2: Execute and insert 
-    db2-->>api: voter info
-    api-->>api:Log response. If db2 access error, then send email to admin
-    alt Success Scenario 
-        api-->ui: Status 201 , voter info
     end
     alt Error Scenario 
         api-->ui: Status 400 , detail error message
