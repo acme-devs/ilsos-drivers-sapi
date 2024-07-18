@@ -8,7 +8,7 @@ Drivers System API
 1. [Description](#description)
 1. [Endpoints](#endpoints)
     1. [POST /v1/drivers/address-update](#post-v1driversaddress-update)
-    1. [PUT /v1/drivers/transaction](#put-v1driverstransaction)
+    1. [PUT /v1/drivers/transaction](#put-v1driversaddress-update-transaction)
     1. [GET /v1/drivers/id-validation](#get-v1driversid-validation)
     
     
