@@ -47,7 +47,7 @@ sequenceDiagram
     alt Error Scenario 
         api-->ui: Status 400 , detail error message
     end
-    api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut) Input:addrverifification(boolean),dl,Id,<br>Street,City,State,ZIP, County,<br>and voter registration(boolean)
+    api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut) Input:addrverification(boolean),dl,Id,<br>Street,City,State,ZIP, County,<br>and voter registration(boolean)
     api-->>mainframe:Update driver record
     mainframe-->>api:Retrieve CICS code.
     api-->>api:Log response. If mainframe access error, then send email to admin
