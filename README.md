@@ -9,7 +9,7 @@ Drivers System API
 1. [Endpoints](#endpoints)
     1. [POST /v1/drivers](#post-v1driversaddress-update)
     1. [GET /v1/drivers/address-verification](#get-v1driversaddress-verification)
-    1. [GET /v1/drivers/id-verification](#get-v1driversid-verification)
+    1. [GET /v1/drivers/id-validation](#get-v1driversid-validation)
     1. [POST /v1/drivers/transaction](#post-v1driverstransaction)
     1. [PUT /v1/drivers/transaction](#put-v1driverstransaction)
     1. [GET /v1/drivers/voters-registration](#get-v1driversvoterstransaction)
@@ -82,7 +82,7 @@ sequenceDiagram
     end
 ```
 
-### GET /v1/drivers/id-verification
+### GET /v1/drivers/id-validation
 Get drivers id from mainframe.
 
 ```mermaid
@@ -92,7 +92,7 @@ sequenceDiagram
     participant api as ilsos-drivers-sapi
     participant mainframe as MainFrame
     
-    ui->>api:GET/drivers/id-verification <br>Input: dl,Id and last4ssn
+    ui->>api:GET/drivers/id-validation <br>Input: dl,Id and last4ssn
     note over mainframe:CICS:dsf02gOut
     api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut).
     api-->>mainframe:Validate input data.
