@@ -41,13 +41,13 @@ sequenceDiagram
 
     note over db2:DP_ADDRCHG_TRANS
     note over mainframe:CICS:dsf02gOut
-    api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.<br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
+    api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.<br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,<br>Street,City,State,ZIP,County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
     api-->>db2:Update
     api-->>api:Log response. If db2 access error, then send email to admin
     alt Error Scenario 
         api-->ui: Status 400 , detail error message
     end
-    api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut)<br> Input:idTransaction("DSF2")addrverification(boolean),dl,Id,<br>Street,City,State,ZIP, County,<br>and voter registration
+    api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut)<br> Input:idTransaction("DSF1" or "DSF2")addrverification(boolean),dl,Id,DOB<br>Street,City,State,ZIP, County,<br>and voter registration(Y or N)
     api-->>mainframe:Update driver record
     mainframe-->>api:Retrieve CICS code.
     api-->>api:Log response. If mainframe access error, then send email to admin<br>anything other then 0 is error from cics
