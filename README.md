@@ -8,7 +8,6 @@ Drivers System API
 1. [Description](#description)
 1. [Endpoints](#endpoints)
     1. [POST /v1/drivers/address-update](#post-v1driversaddress-update)
-    1. [PUT /v1/drivers/transaction](#put-v1driversaddress-update-transaction)
     1. [GET /v1/drivers/id-validation](#get-v1driversid-validation)
     
     
@@ -81,32 +80,5 @@ sequenceDiagram
     end
     alt Error Scenario 
         api-->ui: Status 400 
-    end
-```
-
-### PUT /v1/drivers/address-update-transaction
-Updates the information related with a transaction for the process of driver address update.
-
-```mermaid
-sequenceDiagram
-    autonumber
-    participant ui as UI
-    participant api as ilsos-drivers-sapi
-    participant db2 as DB2
-    
-    ui->>api:PUT/drivers/address-update-transaction <br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,DOB<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
-
-    note over db2:DP_ADDRCHG_TRANS
-    
-    api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.
-    api-->>db2: Insert or Update 
-    
-    db2-->>api: Idtransaction
-    api-->>api:Log response. If db2 access error, then send email to admin
-    alt Success Scenario 
-        api-->ui: Status 201 , idtransaction
-    end
-    alt Error Scenario 
-        api-->ui: Status 400 , detail error message
     end
 ```
