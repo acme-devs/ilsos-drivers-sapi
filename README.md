@@ -31,12 +31,12 @@ The next diagram shows the business sequence of messages or events exchanged bet
 ```mermaid
 sequenceDiagram
     autonumber
-    participant ui as UI
+    participant eapi as ilsos-addresschange-eapi
     participant api as ilsos-drivers-sapi
     participant db2 as DB2
     participant mainframe as MainFrame
 
-    ui->>api:POST/drivers/address-update <br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,DOB<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
+    eapi->>api:POST/drivers/address-update <br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,DOB<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
 
     note over db2:DP_ADDRCHG_TRANS
     note over mainframe:CICS:dsf02gOut
@@ -51,10 +51,10 @@ sequenceDiagram
     mainframe-->>api:Retrieve CICS code.
     api-->>api:Log response. If mainframe access error, then send email to admin<br>anything other then 0 is error from cics
     alt Success Scenario 
-        api-->ui: Status 200 
+        api-->eapi: Status 200 
     end
     alt Error Scenario 
-        api-->ui: Status 400 , error from CICS
+        api-->eapi: Status 400 , error from CICS
     end
   ```
 
@@ -65,20 +65,20 @@ Get drivers id from mainframe.
 ```mermaid
 sequenceDiagram
     autonumber
-    participant ui as UI
+    participant eapi as ilsos-addresschange-eapi
     participant api as ilsos-drivers-sapi
     participant mainframe as MainFrame
     
-    ui->>api:GET/drivers/id-validation <br>Input: dl,Id and last4ssn
+    eapi->>api:GET/drivers/id-validation <br>Input: dl,Id and last4ssn
     note over mainframe:CICS:dsf02gOut
     api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut).
     api-->>mainframe:Validate input data.
     mainframe-->>api:Retrieve CICS code.
     api-->>api:Log response. If mainframe access error, then send email to admin
     alt Success Scenario 
-        api-->ui: Status 200
+        api-->eapi: Status 200
     end
     alt Error Scenario 
-        api-->ui: Status 400 
+        api-->eapi: Status 400 
     end
 ```
