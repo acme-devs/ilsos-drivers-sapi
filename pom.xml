@@ -4,13 +4,13 @@
 	<parent>
 		<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
 		<artifactId>ilsos-pom</artifactId>
-		<version>1.0.20</version>
+		<version>1.0.23</version>
 		<relativePath/>
 	</parent>
 
 	<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
 	<artifactId>ilsos-drivers-sapi-app</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.4</version>
 	<packaging>mule-application</packaging>
 
 	<name>ilsos-drivers-sapi</name>
@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
 			<artifactId>ilsos-commons</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.5</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
