@@ -21,7 +21,7 @@
 		<fields key="sourceCode">https://github.com/jpontdia/ilsos-core</fields>
 		<categories key="Asset type">Configuration</categories>-->
 		<tags>Drivers, CICS, DB2, sapi</tags>
-	</properties>
+	</properties> 
 
 	<dependencies>
 
