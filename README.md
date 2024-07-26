@@ -36,17 +36,17 @@ sequenceDiagram
     participant db2 as DB2
     participant mainframe as MainFrame
 
-    eapi->>api:PUT/address-update <br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,DOB<br>street,city,state,zipCode, county,<br>countyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
+    eapi->>api:PUT/address-change <br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,DOB<br>street,city,state,zipCode, county,<br>countyCode,trueClientIP,dlIssueDate,IdIssueDate and tvdl
 
     note over db2:DP_ADDRCHG_TRANS
     note over mainframe:CICS:dsf02gOut
-    api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.<br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,<br>Street,City,State,ZIP,County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
+    api-->>api:Dataweave - format records for db2<BR> DP_ADDRCHG_TRANS TABLE.<br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,<br>street,city,state,zipCode,county,<br>countyCode,trueClientIP,dlIssueDate,IdIssueDate and tvdl
     api-->>db2:Update
     api-->>api:Log response. If db2 access error, then send email to admin
     alt Error Scenario 
         api-->eapi: Status 400 or 500 , detail error message
     end
-    api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut)<br> Input:idTransaction("DSF1" or "DSF2")addrverification(boolean),dl,Id,DOB<br>Street,City,State,ZIP, County,<br>and voter registration(Y or N)
+    api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut)<br> Input:idTransaction("DSF1" or "DSF2")addrverification(boolean),dl,Id,dob<br>street,city,state,zipCode, county,<br>and voter registration(Y or N)
     api-->>mainframe:Update driver record
     mainframe-->>api:Retrieve CICS code.
     api-->>api:Log response. If mainframe access error, then send email to admin<br>anything other then 0 is error from cics
