@@ -23,7 +23,7 @@ This service implements the next API specification: https://anypoint.mulesoft.co
 ## Endpoints
 The service provides the next endpoints:
 
-### POST /v1/drivers/address-update
+### PUT /address-change
 Updates the driver address.
 
 The next diagram shows the business sequence of messages or events exchanged between the several backend systems.
@@ -36,7 +36,7 @@ sequenceDiagram
     participant db2 as DB2
     participant mainframe as MainFrame
 
-    eapi->>api:POST/drivers/address-update <br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,DOB<br>Street,City,State,ZIP, County,<br>CountyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
+    eapi->>api:PUT/address-update <br>Input:vin,dept,addrverifification(boolean),beginTransDatetime<br>dl,Id,last4ssn,DOB<br>street,city,state,zipCode, county,<br>countyCode,TrueClientIP,dlIssueDate,IdIssueDate and TVDL
 
     note over db2:DP_ADDRCHG_TRANS
     note over mainframe:CICS:dsf02gOut
@@ -54,13 +54,13 @@ sequenceDiagram
         api-->eapi: Status 200 
     end
     alt Error Scenario 
-        api-->eapi: Status 400 , error from CICS
+        api-->eapi: Status 400 or 500 , error from CICS
     end
   ```
 
 
-### GET /v1/drivers/id-validation
-Get drivers id from mainframe.
+### PUT /id-validation
+Validates the drivers license or state ID.
 
 ```mermaid
 sequenceDiagram
@@ -69,7 +69,7 @@ sequenceDiagram
     participant api as ilsos-drivers-sapi
     participant mainframe as MainFrame
     
-    eapi->>api:GET/drivers/id-validation <br>Input: dl,Id and last4ssn
+    eapi->>api:PUT/id-validation <br>Input: dl,Id and last4ssn
     note over mainframe:CICS:dsf02gOut
     api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut).
     api-->>mainframe:Validate input data.
@@ -79,6 +79,6 @@ sequenceDiagram
         api-->eapi: Status 200
     end
     alt Error Scenario 
-        api-->eapi: Status 400 
+        api-->eapi: Status 400 or 500, cics error code 
     end
 ```
