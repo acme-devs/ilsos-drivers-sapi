@@ -24,7 +24,7 @@ This service implements the next API specification: https://anypoint.mulesoft.co
 The service provides the next endpoints:
 
 ### PUT /address-change
-Updates the driver address.
+Update the driver address.
 
 The next diagram shows the business sequence of messages or events exchanged between the several backend systems.
 
