@@ -54,7 +54,7 @@ sequenceDiagram
         api-->eapi: Status 200 
     end
     alt Error Scenario 
-        api-->eapi: Status 400 or 500 , error from CICS
+        api-->eapi: Status 400 or 500 , cics error code
     end
   ```
 
