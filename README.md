@@ -44,7 +44,7 @@ sequenceDiagram
     api-->>db2:Update
     api-->>api:Log response. If db2 access error, then send email to admin
     alt Error Scenario 
-        api-->ui: Status 400 , detail error message
+        api-->eapi: Status 400 or 500 , detail error message
     end
     api-->>api:Dataweave - format records for mainframe CICS(dsf02gOut)<br> Input:idTransaction("DSF1" or "DSF2")addrverification(boolean),dl,Id,DOB<br>Street,City,State,ZIP, County,<br>and voter registration(Y or N)
     api-->>mainframe:Update driver record
