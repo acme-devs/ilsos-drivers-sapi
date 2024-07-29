@@ -1,2 +1,10 @@
 # Default environment
 env: local
+
+# The RAML API and autodiscovery
+api:  
+  group: "${restconnector.api.spec.group}"
+  artifact: "${restconnector.api.spec.artifact}"
+  version: "${restconnector.api.spec.version}"
+  spec: "resource::${api.group}:${api.artifact}:${api.version}:raml:zip:api.raml"
+  id: "0"

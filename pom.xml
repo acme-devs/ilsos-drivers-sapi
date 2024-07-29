@@ -10,7 +10,7 @@
 
 	<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
 	<artifactId>ilsos-drivers-sapi-app</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 	<packaging>mule-application</packaging>
 
 	<name>ilsos-drivers-sapi</name>
@@ -21,9 +21,56 @@
 		<fields key="sourceCode">https://github.com/jpontdia/ilsos-core</fields>
 		<categories key="Asset type">Configuration</categories>-->
 		<tags>Drivers, CICS, DB2, sapi</tags>
+
+		<!-- RAML specification -->
+		<restconnector.api.spec.group>${project.groupId}</restconnector.api.spec.group>
+		<restconnector.api.spec.artifact>ilsos-drivers-sapi</restconnector.api.spec.artifact>
+		<restconnector.api.spec.version>1.0.6</restconnector.api.spec.version>
 	</properties> 
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<sharedLibraries>
+						<sharedLibrary>
+							<groupId>org.apache.commons</groupId>
+							<artifactId>commons-dbcp2</artifactId>
+						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>com.ibm.db2.jcc</groupId>
+							<artifactId>db2jcc_license_cu</artifactId>
+						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>com.ibm.db2.jcc</groupId>
+							<artifactId>db2jcc_license_cisuz</artifactId>
+						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>com.ibm.db2.jcc</groupId>
+							<artifactId>db2jcc</artifactId>
+						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>com.microsoft.sqlserver</groupId>
+							<artifactId>mssql-jdbc</artifactId>
+						</sharedLibrary>
+					</sharedLibraries>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<dependencies>
+		<!-- RAML specification -->
+		<dependency>
+			<groupId>${restconnector.api.spec.group}</groupId>
+			<artifactId>${restconnector.api.spec.artifact}</artifactId>
+			<version>${restconnector.api.spec.version}</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
+		</dependency>
 
 		<!-- Common configurations -->
 		<dependency>
@@ -32,5 +79,80 @@
 			<version>1.0.5</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
+
+		<!-- Database dependencies-->
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-db-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+		</dependency>
+		<!-- DB2 -->
+		<!-- Next dependencies are the latestest but not the same ILSOS is using
+		<dependency>
+			<groupId>com.ibm.db2</groupId>
+			<artifactId>jcc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.db2</groupId>
+			<artifactId>db2jcc_license_cisuz</artifactId>
+			<version>4.12.55</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.db2</groupId>
+			<artifactId>license</artifactId>
+			<version>1.0</version>
+		</dependency>
+		-->
+
+		<!-- Dependencies taken from com.ibm.db2.jcc group https://mvnrepository.com/artifact/com.ibm.db2.jcc -->
+		<dependency>
+			<groupId>com.ibm.db2.jcc</groupId>
+			<artifactId>db2jcc_license_cu</artifactId>
+			<version>9.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.db2.jcc</groupId>
+			<artifactId>db2jcc_license_cisuz</artifactId>
+			<version>9.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.db2.jcc</groupId>
+			<artifactId>db2jcc</artifactId>
+			<version>db2jcc4</version>
+		</dependency>
+
+		<!-- Micorosoft SqlServer -->		
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc_auth</artifactId>
+			<type>dll</type>
+		</dependency>
+
+		<!-- IBM Mainframe-->
+		<dependency>
+			<groupId>com.mulesoft.connectors</groupId>
+			<artifactId>mule-ibm-ctg-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
 	</dependencies>
+
+	<!-- Move this repository to Parent POM-->
+	<!-- Repository for DB2 license jars -->
+	<repositories>
+		<repository>
+			<id>CamundaPublic</id>
+			<name>CamundaPublic Repository</name>
+			<url>https://artifacts.camunda.com/artifactory/public</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+	
 </project>
