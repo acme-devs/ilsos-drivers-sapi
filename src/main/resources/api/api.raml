@@ -1,0 +1,43 @@
+#%RAML 1.0
+title: ilsos-drivers-sapi
+description: API service that gets id validation, updates driver address and drivers transaction .
+version: v1
+documentation:
+  -
+    title: ilsos-drivers-sapi
+    content: API service that gets id validation, updates driver address and drivers transaction.
+protocols:
+  - HTTPS
+uses:
+  core: /exchange_modules/0fa744b1-1284-46c5-b23c-0eb98ea787e3/spec-library-core/1.0.27/spec.raml
+  drivers: /exchange_modules/0fa744b1-1284-46c5-b23c-0eb98ea787e3/spec-library-drivers/1.0.19/spec.raml
+
+/address-change:
+  description:
+    Update the drivers address
+  put:
+    displayName: Update address
+    description: Update the drivers address
+    body:
+       application/json:
+        type: drivers.addressChangeType
+    is:
+      - core.clientIdEnforcement
+      - core.standardResponse:
+      - core.200Response
+
+
+/id-validation:
+  description: Validates the drivers license or state ID
+  put:
+    displayName: ID validation
+    description: Validates the drivers license or state ID
+    is:
+      - drivers.idVerificationQueryParameters
+      - core.clientIdEnforcement
+      - core.standardResponse:
+      - core.200Response
+
+/healthcheck:
+  get:
+    is: core.healthcheck

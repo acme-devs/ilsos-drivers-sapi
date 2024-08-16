@@ -1,0 +1,398 @@
+#%RAML 1.0 Library
+usage: |
+  Common resources that helps to build unified services. <br>
+  A RAML (RESTful API Modeling Language) library is a reusable component that allows you to define and organize commonly used elements in RAML files. It helps in modularizing and sharing API specifications across different RAML files, promoting reuse and consistency. Here are the key points about a RAML library:
+
+  1. Modularity: RAML libraries enable you to break down large API definitions into smaller, manageable, and reusable components. This modularity improves maintainability and readability.
+
+  2. Reusability: Commonly used definitions such as types, traits, resource types, and security schemes can be defined once in a library and reused across multiple RAML files. This reduces duplication and ensures consistency.
+
+  3. Organization: Libraries help organize API specifications by grouping related elements together. This makes it easier to manage and navigate complex API structures.
+
+  4. Sharing: Libraries can be shared across different projects and teams, facilitating collaboration and standardization within an organization.
+
+  Components of a RAML Library <br>
+
+  A RAML library can include various reusable elements:
+
+  Types: Define data structures and schemas.
+  Traits: Define reusable patterns of resource and method behavior.
+  Resource Types: Define templates for resources.
+  Security Schemes: Define authentication and authorization mechanisms.
+  Examples: Provide example data for types and responses.
+
+types:
+  metadata:
+    type: object
+    displayName: Service Metadata
+    description: Service metadata
+    additionalProperties: false
+    properties:
+      correlationId:
+        type: string
+        required: true
+        description: Is a unique identifier used to track and correlate related transactions and messages across different components or services within a distributed system.
+        example: cb77f47e-923a-4195-86fc-23bbf2f01311
+      status:
+        type: integer
+        required: true
+        description: HTTP status code
+        example: 401
+      message:
+        type: string 
+        required: true
+        description: Message response
+        example: Unauthorized or invalid client application credentials
+      processingTime: 
+        type: string
+        required: false
+        description: Time taken for the service to fulfill the operation. The time doesnt take into consideration the network latency between the client and the service.
+      location:
+        type: string
+        required: false
+        description: Only for operations that creates a resource in the backend here is sent back the id of the element created
+        example: "923448"
+
+  correlationId:
+    type: string
+    displayName: correlationId
+    description: Is a unique identifier used to track and correlate related transactions and messages across different components or services within a distributed system.
+    maxLength: 36
+    example: 98bafd70-52be-11ef-b36c-bcd0740436f9
+
+  http:
+    type: object
+    displayName: Http
+    description: Http connexion details
+    additionalProperties: false
+    properties:
+      protocol:
+        type: string
+        required: true
+        description: Http protocol
+        enum: [HTTP,HTTPS]
+        example: HTTPS
+      port:
+        type: number
+        required: true
+        description: Http port number
+        example: 8081
+
+  artifact:
+    type: object
+    displayName: Maven Artifact Metadata
+    description: Maven Artifact Metadata
+    additionalProperties: false
+    properties:
+      group:
+        type: string
+        required: true
+        description: Maven groupId
+        example: fa744b1-1284-46c5-b23c-0eb98ea787e3
+      artifact:
+        type: string
+        required: true
+        description: Maven artifactId
+        example: ilsos-address-sapi
+      version:
+        type: string
+        required: true
+        description: Maven artifact version
+        example: 1.0.0
+
+  health:
+    type: object
+    displayName: health
+    description: Health service metadata
+    additionalProperties: false
+    properties:
+      correlationId:
+        type: correlationId
+
+      status:
+        type: string
+        required: true
+        description: Status service, default value OK
+        example: OK
+      env:
+        type: string
+        required: true
+        description: The environment the service is running. Value assinged to env variable
+        example: prd
+      appId:
+        type: number
+        required: false
+        description: Applicaiton Id in API Manager
+        example: 16534  
+      applicationName:
+        type: string
+        required: false
+        description: Maven POM application name 
+        example: ilsos-address-sapi
+      applicationNameDeployment:
+        type: string
+        required: false
+        description: Name of the application deployed 
+        example: ilsos-address-sapi-prd
+      appHome:
+        type: string
+        required: false
+        description: Location where the application was installed
+        example: /opt/mule/apps/ilsos-address-sapi-stg     
+      http:
+        type: http
+      service:
+        type: artifact
+        description: Service Maven metadata
+      specification:
+        type: artifact
+        description: Specification Maven metadata
+
+
+
+  contentType:
+    type: string
+    displayName: Content-Type
+    description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+    example: 
+      displayName: Content-Type Example
+      description: Content-Type HTTP header example    
+      value: 
+        "application/json"
+
+
+  error:
+    type: object
+    displayName: Service error message
+    description: The error message originated in the service with the HTTP status code
+    additionalProperties: false
+    properties:
+      correlationId:
+          type: string
+          required: false
+          example: cb77f47e-923a-4195-86fc-23bbf2f01311
+          maxLength: 36
+          description: A unique identifier assigned to a transaction or message as it flows through different components or systems
+      status:
+          type: number
+          required: false
+          example: 400
+          description: API status code
+      message:
+          type: string
+          required: false
+          example: Bad request
+          description: Error
+
+traits:
+  healthcheck:
+    displayName: healthcheck
+    description: Health Check Endpoint
+
+    responses:
+      200:
+        description: Health check service information
+        headers:
+          Content-Type:
+            type: contentType
+            description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+        body:
+          application/json:
+            type: health
+            example:
+              correlationId: d43df0ca-ca5f-4a6e-8bff-0c7ce67fe575
+              status: OK
+              env: dev
+              appId: 134556
+              applicationName: ilsos-address-sapi
+              applicationNameDeployment: ilsos-address-sapi-dev
+              appHome: /opt/mule/apps/ilsos-address-sapi-stg
+              http:
+                protocol: HTTPS
+                port: 8081
+              service:
+                group: 0fa744b1-1284-46c5-b23c-0eb98ea787a1
+                artifact: ilsos-address-sapi-app
+                version: 1.0.9
+              specification:
+                group: 0fa744b1-1284-46c5-b23c-0eb98ea787a1
+                artifact: ilsos-address-sapi
+                version: 1.0.16
+
+
+  clientIdEnforcement:
+    headers:
+      client_id:
+        type: string
+        description: Client ID token
+      client_secret:
+        type: string
+        description: Secret
+    responses:
+      401:
+        description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource
+        headers:
+          Content-Type:
+            type: contentType
+            description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+        body:
+          application/json:
+            type: error
+            example:
+              displayName: HTTP Status 401 Example
+              description: 401 status code means that the client needs to provide valid authentication credentials to access the requested resource
+              value: 
+                correlationId: cb77f47e-923a-4195-86fc-23bbf2f01311
+                status: 401
+                message: Unauthorized or invalid client application credentials    
+  
+
+  200Response:
+    responses: 
+      200:
+        description: Successful operation
+        headers:
+          Content-Type:
+            type: contentType
+            description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+        body:
+          application/json:
+            type: metadata
+            example:
+              correlationId: "cb77f47e-923a-4195-86fc-23bbf2f01311"
+              status: 200
+              message: "The operation was successfully processed"
+              processingTime: "00:02:345"                
+
+
+  200ResponseDataType:
+    responses: 
+      200:
+        description: Successful operation
+        headers:
+          Content-Type:
+            type: contentType
+            description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+        body:
+          application/json:
+            type: <<response-type>> # Definition must have an example
+            # example: <<response-example>>
+
+
+
+  201Response:
+    responses: 
+      201:
+        description: Successful operation
+        headers:
+          Content-Type:
+            type: contentType
+            description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+        body:
+          application/json:
+            type: metadata
+            example:
+              correlationId: "cb77f47e-923a-4195-86fc-23bbf2f01311"
+              status: 201
+              message: "The operation was successfully processed"
+              processingTime: "00:02:345"   
+
+
+  standardResponse:
+    responses: 
+      400:
+        description: Bad Request - The server cannot process the request because it is incorrectly formatted or has invalid parameters
+        headers:
+          Content-Type:
+            type: contentType
+            description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+        body:
+          application/json:
+            type: error
+            example:
+              displayName: HTTP Status 400 Example
+              description: 400 status code means that the server cannot process the request due to a client-side error in the request's syntax or parameters
+              value: 
+                correlationId: cb77f47e-923a-4195-86fc-23bbf2f01311
+                status: 400
+                message: Bad request
+      404:
+        description: Not Found - Indicates that the server cannot find the requested resource
+        headers:
+          Content-Type:
+            type: contentType
+            description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+        body:
+          application/json:
+            type: error
+            example:
+              displayName: HTTP Status 404 Example
+              description: 404 status code means that the server could not find the requested resource, typically due to an incorrect URL or a non-existent resource
+              value: 
+                correlationId: cb77f47e-923a-4195-86fc-23bbf2f01311
+                status: 404
+                message: Not found
+      405:
+        description: Method not allowed - Indicates that the request method is not supported by the resource identified by the requested URL
+        headers:
+          Content-Type:
+            type: contentType
+            description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+        body:
+          application/json:
+            type: error
+            example:
+              displayName: HTTP Status 405 Example
+              description: 405 status code means that the request method used by the client is not allowed for the specified resource, and the server provides a list of permitted methods in the response
+              value: 
+                correlationId: cb77f47e-923a-4195-86fc-23bbf2f01311
+                status: 405
+                message: Method not allowed
+      406:
+        description: Not acceptable - The server is unable to generate a response that is acceptable according to the criteria specified by the client in the Accept headers
+        headers:
+          Content-Type:
+            type: contentType
+            description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+        body:
+          application/json:
+            type: error
+            example:
+              displayName: HTTP Status 406 Example
+              description: 406 status code means that the server cannot generate a response that meets the client's specified criteria in the Accept headers, indicating a content negotiation failure
+              value: 
+                correlationId: cb77f47e-923a-4195-86fc-23bbf2f01311
+                status: 406
+                message: Not acceptable
+      415:
+        description: Unsupported media type - The server cannot or will not process the request because the media type of the request payload is not supported by the server or resource
+        headers:
+          Content-Type:
+            type: contentType
+            description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+        body:
+          application/json:
+            type: error
+            example:
+              displayName: HTTP Status 415 Example
+              description: 415 status code means that the server cannot process the request because the payload format is in an unsupported media type, as specified by the Content-Type header in the request
+              value: 
+                correlationId: cb77f47e-923a-4195-86fc-23bbf2f01311
+                status: 415
+                message: Unsupported media type
+      500:
+        description: Internal server error - The server encountered an unexpected condition that prevented it from fulfilling the request
+        headers:
+          Content-Type:
+            type: contentType
+            description: Used to indicate the media type of the resource being sent in the body of the HTTP response
+        body:
+          application/json:
+            type: error
+            example:
+              displayName: HTTP Status 500 Example
+              description: 500 status code signifies that the server encountered an unexpected internal error, preventing it from processing the request, and indicates a need for server-side troubleshooting
+              value: 
+                correlationId: cb77f47e-923a-4195-86fc-23bbf2f01311
+                status: 500
+                message: Internal server error

@@ -8,3 +8,15 @@ api:
   version: "${restconnector.api.spec.version}"
   spec: "resource::${api.group}:${api.artifact}:${api.version}:raml:zip:api.raml"
   id: "0"
+  
+
+# DB2 Configuration
+db2:
+  driver: "com.ibm.db2.jcc.DB2Driver"
+  url: "MyURL"
+  user: "MyUser"
+  password: "MyPassword"
+  
+cics:
+  idValidation-dsf1-code: "DSF1"
+  address-dsf2-transid: "DSF2" 

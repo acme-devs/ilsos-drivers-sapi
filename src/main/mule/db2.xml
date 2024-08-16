@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
+	xmlns="http://www.mulesoft.org/schema/mule/core" 
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" 
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" 
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+    xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd 
+		http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+		http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+	
+	<flow name="db2" doc:id="a8ff2a8a-8a07-4473-bafe-a6e1c596772e">
+		<logger doc:name="show payload" level="INFO" message="#[output application/json --- if ( payload != null) payload else 'No records found']" />
+		<ee:transform doc:name="query database">
+			<ee:variables>
+				<ee:set-variable variableName="query"><![CDATA[#[ %dw 2.0
+					output application/json
+					---
+                    " SELECT * " ++
+                    "   FROM db2devl.DP_ADDR_CHG_TRANS " ++ 
+                    "   WHERE DL_NO =  '" ++ payload.dl ++ "'"
+				]]]>
+				</ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:select doc:name="select" config-ref="Database_Config" target="dbResult">
+			<db:sql><![CDATA[#[vars.query]]]></db:sql>
+		</db:select>
+		<logger level="INFO" doc:name="Logger" doc:id="42633666-eb50-4373-855b-aa6cab00c451" message="#[payload]" />
+		<ee:transform doc:name="update database" doc:id="eada8027-2814-4fd3-8c6c-b4ef4d9afa1e" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="updatequery" ><![CDATA[%dw 2.0
+output application/java
+---					
+ " UPDATE db2devl.DP_ADDR_CHG_TRANS SET DEPT = '"  ++  payload.department  ++ "' , " ++  " STREET = '"  ++  payload.street  ++ "'  WHERE TRANS_KEY =  '" ++ vars.dbResult.TRANS_KEY[0] ++ "'"
+]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:update doc:name="update" doc:id="a9750e38-29bb-41b2-b562-4eeeb1866e24" config-ref="Database_Config">
+			<db:sql ><![CDATA[#[vars.updatequery]]]></db:sql>
+		</db:update>
+		<logger level="INFO" doc:name="Logger" doc:id="632ab024-ee76-4a2c-ba9b-5be5775025a8" message="#[output application/json --- if ( payload != null) payload else 'No records found']"/>
+		<set-variable doc:name="httpstatus" variableName="httpStatus" value='#[200]'  />
+		<error-handler ref="global-error-handler" />
+    </flow>
+    
+    <db:config name="Database_Config"
+		doc:description="This is used to connect to the IBM DB2">
+		<db:generic-connection 
+			driverClassName="${db2.driver}"
+    		url="${db2.url}"
+			user="${db2.user}" 
+			password="${db2.password}"/>
+	</db:config>
+    
+</mule>

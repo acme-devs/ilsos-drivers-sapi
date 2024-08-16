@@ -1,0 +1,14 @@
+form: COPYBOOK
+id: 'DFHCOMMAREA'
+values:
+- { name: 'DSF2-TRANSID', type: String, length: 4 }
+- { name: 'DSF2-DL-NO', type: String, length: 12 }
+- { name: 'DSF2-ID-NO', type: String, length: 12 }
+- { name: 'DSF2-STREET-ADDR', type: String, length: 46 }
+- { name: 'DSF2-CITY', type: String, length: 20 }
+- { name: 'DSF2-ZIP-CD', type: String, length: 9 }
+- { name: 'DSF2-COUNTY-CD', type: String, length: 3 }
+- { name: 'DSF2-MOTOR-VTR', type: String, length: 1}
+- { name: 'DSF2-ADDR-VER', type: String, length: 1 }
+- { name: 'DSF2-PROC-STATUS', type: String, length: 2 }
+- { name: 'DSF2-FILLER', type: String, length: 90 }

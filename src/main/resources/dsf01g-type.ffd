@@ -1,0 +1,14 @@
+form: COPYBOOK
+id: 'DFHCOMMAREA'
+values:
+- { name: 'DSF1-CODE', type: String, length: 4 }
+- { name: 'DSF1-DL-NO', type: String, length: 12 }
+- { name: 'DSF1-DL-ISSUE-DT', type: String, length: 8 }
+- { name: 'DSF1-ID-NO', type: String, length: 12 }
+- { name: 'DSF1-ID-ISSUE-DT', type: String, length: 8 }
+- { name: 'DSF1-SSN-LAST4', type: String, length: 4 }
+- { name: 'DSF1-DOB', type: String, length: 10 }
+- { name: 'DSF1-RETURN-CODE-DL', type: String, length: 2}
+- { name: 'DSF1-RETURN-CODE-ID', type: String, length: 2 }
+- { name: 'DSF1-TVDL', type: String, length: 1 }
+- { name: 'DSF1-FILLER', type: String, length: 137 }

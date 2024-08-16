@@ -25,9 +25,9 @@
 		<!-- RAML specification -->
 		<restconnector.api.spec.group>${project.groupId}</restconnector.api.spec.group>
 		<restconnector.api.spec.artifact>ilsos-drivers-sapi</restconnector.api.spec.artifact>
-		<restconnector.api.spec.version>1.0.6</restconnector.api.spec.version>
-	</properties> 
-
+		<restconnector.api.spec.version>1.0.9</restconnector.api.spec.version>
+		<mule-ibm-ctg-connector.version>2.3.9</mule-ibm-ctg-connector.version>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
@@ -56,7 +56,30 @@
 							<groupId>com.microsoft.sqlserver</groupId>
 							<artifactId>mssql-jdbc</artifactId>
 						</sharedLibrary>
+						
+						<!-- Mainframe -->
+						<sharedLibrary>
+							<groupId>org.apache.geronimo.specs</groupId>
+							<artifactId>geronimo-j2ee-connector_1.6_spec</artifactId>
+						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
+							<artifactId>cicsjee</artifactId>
+						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
+							<artifactId>ccf2</artifactId>
+						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
+							<artifactId>ctgclient</artifactId>
+						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
+							<artifactId>ctgserver</artifactId>
+						</sharedLibrary>
 					</sharedLibraries>
+					<classifier>mule-application</classifier>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -76,7 +99,7 @@
 		<dependency>
 			<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
 			<artifactId>ilsos-commons</artifactId>
-			<version>1.0.5</version>
+			<version>1.0.14</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 
@@ -90,23 +113,7 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-dbcp2</artifactId>
 		</dependency>
-		<!-- DB2 -->
-		<!-- Next dependencies are the latestest but not the same ILSOS is using
-		<dependency>
-			<groupId>com.ibm.db2</groupId>
-			<artifactId>jcc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.ibm.db2</groupId>
-			<artifactId>db2jcc_license_cisuz</artifactId>
-			<version>4.12.55</version>
-		</dependency>
-		<dependency>
-			<groupId>com.ibm.db2</groupId>
-			<artifactId>license</artifactId>
-			<version>1.0</version>
-		</dependency>
-		-->
+		
 
 		<!-- Dependencies taken from com.ibm.db2.jcc group https://mvnrepository.com/artifact/com.ibm.db2.jcc -->
 		<dependency>
@@ -125,7 +132,7 @@
 			<version>db2jcc4</version>
 		</dependency>
 
-		<!-- Micorosoft SqlServer -->		
+		<!-- Micorosoft SqlServer -->
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
@@ -142,6 +149,55 @@
 			<artifactId>mule-ibm-ctg-connector</artifactId>
 			<classifier>mule-plugin</classifier>
 		</dependency>
+		
+		<!-- Database drivers. IBM DB2-->
+		<dependency>
+			<groupId>com.ibm.db2</groupId>
+			<artifactId>jcc</artifactId>
+			<version>11.5.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.db2.jcc</groupId>
+			<artifactId>db2jcc_license_cisuz</artifactId>
+			<version>9.7</version>
+		</dependency>
+				<!-- IBM Mainframe-->
+		<dependency>
+			<groupId>com.mulesoft.connectors</groupId>
+			<artifactId>mule-ibm-ctg-connector</artifactId>
+			<version>${mule-ibm-ctg-connector.version}</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-j2ee-connector_1.6_spec</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
+			<artifactId>cicsjee</artifactId>
+			<version>9.2.0</version>
+			<classifier>custom</classifier>
+		</dependency>
+		<dependency>
+			<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
+			<artifactId>ccf2</artifactId>
+			<version>9.2.0</version>
+			<classifier>custom</classifier>
+		</dependency>
+		<dependency>
+			<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
+			<artifactId>ctgclient</artifactId>
+			<version>9.2.0</version>
+			<classifier>custom</classifier>
+		</dependency>
+		<dependency>
+			<groupId>0fa744b1-1284-46c5-b23c-0eb98ea787e3</groupId>
+			<artifactId>ctgserver</artifactId>
+			<version>9.2.0</version>
+			<classifier>custom</classifier>
+		</dependency>
+		
 	</dependencies>
 
 	<!-- Move this repository to Parent POM-->
@@ -154,5 +210,4 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
-	
 </project>
