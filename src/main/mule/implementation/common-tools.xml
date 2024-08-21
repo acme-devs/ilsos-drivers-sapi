@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:ibmctg="http://www.mulesoft.org/schema/mule/ibmctg" 
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation=" 
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd 
+		http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+		http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+		http://www.mulesoft.org/schema/mule/ibmctg http://www.mulesoft.org/schema/mule/ibmctg/current/mule-ibmctg.xsd
+		http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	
+	<flow name="call-db2-remove-variables-flow" doc:id="185ebf69-874e-431b-8ea4-94273dcfa884">
+		<db:update doc:name="update records" doc:id="61c42aad-362a-43c6-864c-fe6c9c758272" config-ref="Database_Config">
+			<db:sql ><![CDATA[#[vars.updatequery]]]></db:sql>
+		</db:update>
+		
+		<set-variable doc:name="set httpStatus" variableName="httpStatus" value='#[200]'  />
+
+		<!-- Remove variables -->
+		<choice doc:name="remove variable" >
+            <when expression='#[vars.query != null]'>
+				<remove-variable doc:name="remove query" variableName="query"/>
+			</when>
+		</choice>
+		<choice doc:name="remove variable" doc:id="9d404e46-3a33-459d-835a-4615873c7a2a" >
+			<when expression="#[vars.updatequery != null]">
+				<remove-variable doc:name="remove updatequery" variableName="updatequery" />
+			</when>
+		</choice>
+
+		<error-handler>
+			<on-error-continue enableNotifications="false" logException="${resttool.logexception}">
+				<logger level="INFO" category="app" message="There was an error while calling the db2 API service" />
+				<logger level="INFO" category="app" message="#[error.errorMessage.payload]" />
+				<set-variable doc:name="set httpStatus" variableName="httpStatus" value='#[error.errorMessage.attributes.statusCode]'/>
+				<set-variable doc:name="set apiErrorMessage" variableName="apiErrorMessage" value='#[error.errorMessage.payload]'/>
+			</on-error-continue>
+		</error-handler>
+	</flow> 
+	
+	<flow name="common-cics-api-flow" doc:id="63ed1b18-fc01-45f8-8de1-43ef339a758e">
+     <ibmctg:execute-using-commarea doc:name="Execute using commarea" 
+  				 config-ref="IBM_CTG_Config">
+		<ibmctg:commarea-request-type 
+			programName="DSF02G" tpnName="CSMI"/>
+		</ibmctg:execute-using-commarea>
+
+		<!-- Remove variables -->
+
+		<error-handler ref="global-error-handler">
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="674ee5e0-eeb1-4b64-814b-80208390b193" >
+				<logger level="INFO" category="app" message="There was an error while calling the cics address API service" />
+				<logger level="INFO" category="app" message="#[error.errorMessage.payload]" />
+				<set-variable doc:name="set httpStatus" variableName="httpStatus" value="#[error.errorMessage.attributes.statusCode]" />
+				<set-variable doc:name="set apiErrorMessage" variableName="apiErrorMessage" value="#[error.errorMessage.payload]" />
+				<ee:transform doc:name="errorResponse" doc:id="03066e3c-f1af-4d17-8a06-e5535b6e3bc1">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json skipNullOn = "everywhere"
+---
+{
+	correlationId: vars.correlationId,
+	code: vars.httpStatus,
+	message: vars.apiErrorMessage.error.errors[0].detail
+}	]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<sub-flow name="cics-address-remove-variables-flow" doc:id="44f69eac-4e69-40dd-87f0-223750516cd9" >
+		<remove-variable doc:name="Remove payload" doc:id="61960365-20c5-4abd-a5de-13e25adb4695" variableName="payload" />
+		<remove-variable doc:name="Remove DSF2PROCSTATUS" doc:id="96a52ba7-bd1b-495d-85ec-9e0df3a8b1b6" variableName="DSF2PROCSTATUS" />
+	</sub-flow>
+	
+	<sub-flow name="cics-id-address-remove-variables-flow" doc:id="3fe310bd-ca19-4e4e-af76-e526594986e2" >
+		<remove-variable doc:name="Remove DSF1RETURNCODEDL" doc:id="c23e59dd-4ec3-4d47-ad30-10f04178930f" variableName="DSF1RETURNCODEDL" />
+		<remove-variable doc:name="Remove DSF1RETURNCODEID" doc:id="51f45ae2-c031-4094-b35b-e418c232e1e1" variableName="DSF1RETURNCODEID" />
+	</sub-flow> 
+	
+</mule>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	
+	xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:http="http://www.mulesoft.org/schema/mule/http" 
+	xmlns:ibmctg="http://www.mulesoft.org/schema/mule/ibmctg" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd 
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+		http://www.mulesoft.org/schema/mule/ibmctg http://www.mulesoft.org/schema/mule/ibmctg/current/mule-ibmctg.xsd
+		http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+	
+	
+	<flow name="global-cics-idvalidation-Flow" doc:id="344b9dda-0a86-4d5c-b2df-57585aaf49ed">
+		
+		<logger level="INFO" message="Testing CICS" doc:name="Flow Start"/>
+		
+		<ee:transform>
+   			<ee:message>
+    			<ee:set-payload resource="dwl/cics-id-validation-payload.dwl"></ee:set-payload>
+   			</ee:message>
+   			<ee:variables>
+   			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="common-cics-api-flow Reference" doc:id="6acd4eb3-41af-49a6-888f-50f114d3473d" name="common-cics-api-flow"/> 
+  		<ee:transform doc:name="Transform Message" doc:id="c3091c0c-18df-495f-b81d-9a4f80aabe32" >
+			<ee:message >
+				<ee:set-payload resource="dwl/set-payload.dwl"></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+			</ee:variables>
+		</ee:transform>
+		<set-variable value="#[payload[58 to 59]]" doc:name="Set DSF1RETURNCODEDL" doc:id="520eac89-7173-407e-bf11-17926d040c41" variableName="DSF1RETURNCODEDL"/>
+		<set-variable value="#[payload[60 to 61]]" doc:name="Set DSF1RETURNCODEID" doc:id="4bdd6c7f-b22c-454b-ae6c-f6c2352ab32b" variableName="DSF1RETURNCODEID"/>
+		<logger level="INFO" doc:name="Logger" doc:id="ed424cc1-e4ee-426e-9c37-f78102ee886e" message='#["mainframe response:  " ++ vars.DSF1RETURNCODEDL default ""]'/>
+		<ee:transform doc:name="Transform Message" doc:id="56e1a9f3-27df-4b51-8bfb-a64eadef4001" >
+			<ee:message >
+				<ee:set-payload resource="dwl/cics-id-validation-response.dwl"></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" message='#[payload]' />
+		<flow-ref doc:name="Remove Variable FLow Reference" doc:id="70d4db61-8400-4c99-b779-5b69bc9528e9" name="cics-id-address-remove-variables-flow"/>
+		<ee:transform doc:name="final  Response" doc:id="668252ea-c226-4f3c-b2e9-70c7ce20889a" >
+			<ee:message >
+				<ee:set-payload resource="dwl/response-payload.dwl"></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Flow End" doc:id="7644919d-1d24-4914-93e4-e9df389b9a82" message="CICS Id Validation Flow End"/>
+		
+	</flow>
+	
+	<flow name="global-cics-address-Flow" doc:id="e8119ca3-ae12-43b0-a580-e260c1a48831">
+		
+		<logger level="INFO" message="Testing DB2 and CICS" doc:name="Flow Start"/>
+		
+		<set-variable value="#[payload]" doc:name="Set payload variable" doc:id="c927b4bd-a636-493f-894e-634f75cb7130" variableName="payload"/>
+		<flow-ref doc:name="db2 Flow Reference" doc:id="3d9f88a4-9f75-4f89-9aae-15060640de71" name="db2"/>
+		<ee:transform>
+   			<ee:message>
+    			<ee:set-payload resource="dwl/cics-address-change-payload.dwl"></ee:set-payload>
+   			</ee:message>
+   			<ee:variables>
+   			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="common-cics-api-flow Flow Reference" doc:id="1a49d9fd-0e28-44a1-a5cf-ecd71bdbf44c" name="common-cics-api-flow"/>
+	
+  		<ee:transform doc:name="Transform Message" doc:id="b6837c86-e814-4f96-b211-0a2bbe5fd632" >
+			<ee:message >
+				<ee:set-payload resource="dwl/set-payload.dwl"></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-variable value="#[payload[108 to 109]]" doc:name="Set DSF2PROCSTATUS" doc:id="dd47e226-a3f2-4776-8960-5330108cd74a" variableName="DSF2PROCSTATUS"/>
+		<logger level="INFO" message="#[payload]" doc:name="payload logger"/>
+		<ee:transform doc:name="Transform Message" doc:id="c6bcdf60-d565-4996-a36a-82c0cb1e3bd0" >
+			<ee:message >
+				<ee:set-payload resource="dwl/cics-address-change-response.dwl"></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="Remove Variable FLow Reference" doc:id="7374d1b0-b727-499e-84c9-cf07cbed9f4e" name="cics-address-remove-variables-flow"/>
+		<ee:transform doc:name="final Response" doc:id="965a68a6-ff25-4b89-80b2-2f1f49e5d5f5" >
+			<ee:message >
+				<ee:set-payload resource="dwl/response-payload.dwl"></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Flow End" doc:id="167b7bbb-240c-4ed4-85a6-dcb0005b1675" message="CICS Address Flow End"/>
+	
+	</flow>
+	
+</mule>

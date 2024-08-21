@@ -3,7 +3,6 @@
     <!-- <http:listener-config name="api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config> -->
-    
     <flow name="api-main">
         <http:listener config-ref="api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -15,86 +14,7 @@
             </http:error-response>
         </http:listener>
         <apikit:router config-ref="api-config" />
-        <error-handler>
-            <on-error-propagate type="APIKIT:BAD_REQUEST">
-                <ee:transform doc:name="Transform Message">
-                    <ee:message>
-                        <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{message: "Bad request"}]]></ee:set-payload>
-                    </ee:message>
-                    <ee:variables>
-                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
-                    </ee:variables>
-                </ee:transform>
-            </on-error-propagate>
-            <on-error-propagate type="APIKIT:NOT_FOUND">
-                <ee:transform doc:name="Transform Message">
-                    <ee:message>
-                        <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{message: "Resource not found"}]]></ee:set-payload>
-                    </ee:message>
-                    <ee:variables>
-                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
-                    </ee:variables>
-                </ee:transform>
-            </on-error-propagate>
-            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
-                <ee:transform doc:name="Transform Message">
-                    <ee:message>
-                        <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{message: "Method not allowed"}]]></ee:set-payload>
-                    </ee:message>
-                    <ee:variables>
-                        <ee:set-variable variableName="httpStatus">405</ee:set-variable>
-                    </ee:variables>
-                </ee:transform>
-            </on-error-propagate>
-            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
-                <ee:transform doc:name="Transform Message">
-                    <ee:message>
-                        <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{message: "Not acceptable"}]]></ee:set-payload>
-                    </ee:message>
-                    <ee:variables>
-                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
-                    </ee:variables>
-                </ee:transform>
-            </on-error-propagate>
-            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
-                <ee:transform doc:name="Transform Message">
-                    <ee:message>
-                        <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{message: "Unsupported media type"}]]></ee:set-payload>
-                    </ee:message>
-                    <ee:variables>
-                        <ee:set-variable variableName="httpStatus">415</ee:set-variable>
-                    </ee:variables>
-                </ee:transform>
-            </on-error-propagate>
-            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
-                <ee:transform doc:name="Transform Message">
-                    <ee:message>
-                        <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{message: "Not Implemented"}]]></ee:set-payload>
-                    </ee:message>
-                    <ee:variables>
-                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
-                    </ee:variables>
-                </ee:transform>
-            </on-error-propagate>
-        </error-handler>
+        <error-handler ref="global-error-handler" />
     </flow>
     <flow name="api-console">
         <http:listener config-ref="api-httpListenerConfig" path="/console/*">
@@ -107,29 +27,15 @@ output application/json
             </http:error-response>
         </http:listener>
         <apikit:console config-ref="api-config" />
-        <error-handler>
-            <on-error-propagate type="APIKIT:NOT_FOUND">
-                <ee:transform doc:name="Transform Message">
-                    <ee:message>
-                        <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{message: "Resource not found"}]]></ee:set-payload>
-                    </ee:message>
-                    <ee:variables>
-                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
-                    </ee:variables>
-                </ee:transform>
-            </on-error-propagate>
-        </error-handler>
+        <error-handler ref="global-error-handler" />
     </flow>
     <flow name="put:\address-change:application\json:api-config">
-		<flow-ref doc:name="global-cics-address-Flow" doc:id="d2cea95d-4f4e-4808-a393-c9a5ae488c62" name="global-cics-address-Flow"/>
+        <flow-ref doc:name="global-cics-address-Flow" doc:id="d2cea95d-4f4e-4808-a393-c9a5ae488c62" name="global-cics-address-Flow" />
     </flow>
     <flow name="put:\id-validation:api-config" doc:id="2e968881-96fb-4d8e-a9b4-6d4ab30137c3">
-		<flow-ref doc:name="put:\id-validation:api-config" doc:id="4b854a81-4548-4b16-a73a-9c1793df4693" name="global-cics-idvalidation-Flow"/>
+        <flow-ref doc:name="put:\id-validation:api-config" doc:id="4b854a81-4548-4b16-a73a-9c1793df4693" name="global-cics-idvalidation-Flow" />
     </flow>
     <flow name="get:\healthcheck:api-config" doc:id="923941e8-07a8-486b-8145-5fc56764dfae">
-		<flow-ref doc:name="Flow Reference" doc:id="8618baaa-65b1-498b-b4c4-4ae0597e9481" name="get:\healthcheck:api-config"/>
+        <flow-ref doc:name="get:\healthcheck:api-config" doc:id="8618baaa-65b1-498b-b4c4-4ae0597e9481" name="get:\healthcheck:api-config" />
     </flow>
 </mule>
