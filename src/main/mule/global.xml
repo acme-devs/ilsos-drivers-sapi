@@ -37,7 +37,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		<http:listener-connection
 			connectionIdleTimeout="1800000"
 			host="0.0.0.0"
-			port="8083" protocol="HTTPS" tlsContext="TLS_Context">
+			port="${https.port}" protocol="HTTPS" tlsContext="TLS_Context">
 		</http:listener-connection>
 		
 	</http:listener-config>
