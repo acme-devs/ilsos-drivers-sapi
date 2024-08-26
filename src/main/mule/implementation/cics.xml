@@ -55,33 +55,39 @@ if ( vars.DSF1RETURNCODEDL == "00"){
 else if ( vars.DSF1RETURNCODEDL == p('cicserror.zero-one-code') ) {
 	dsf1returncodedl: p('cicserror.zero-one-message'),
 	code: "400"
+	
 }  
 	else if ( vars.DSF1RETURNCODEDL == p('cicserror.zero-two-code') ) {
 	dsf1returncodedl: p('cicserror.zero-two-message'),
 	code: "400"
+	
 }  
 	else if ( vars.DSF1RETURNCODEDL == p('cicserror.zero-three-code') ) {
 	dsf1returncodedl: p('cicserror.zero-three-message'),
 	code: "400"
+	
 } 
 	else if ( vars.DSF1RETURNCODEDL == p('cicserror.zero-six-code') ) {
 	dsf1returncodedl: p('cicserror.zero-six-message'),
 	code: "400"
+	
 } 
 	else if ( vars.DSF1RETURNCODEDL == p('cicserror.zero-four-code') ) {
 	dsf1returncodedl: p('cicserror.zero-four-message'),
 	code: "400"
+	
 } 
 	else if ( vars.DSF1RETURNCODEDL == p('cicserror.zero-seven-code') ) {
 	dsf1returncodedl: p('cicserror.zero-seven-message'),
 	code: "400"
+	
 } 
     else dsf1returncodedl: "Success"
  ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<flow-ref doc:name="Remove Variable FLow Reference" doc:id="70d4db61-8400-4c99-b779-5b69bc9528e9" name="cics-id-address-remove-variables-flow"/>
-		<ee:transform doc:name="final  Response" doc:id="668252ea-c226-4f3c-b2e9-70c7ce20889a" >
+		<ee:transform doc:name="Final  Response" doc:id="668252ea-c226-4f3c-b2e9-70c7ce20889a" >
 			<ee:message >
 				<ee:set-payload resource="dwl/response-payload.dwl"></ee:set-payload>
 			</ee:message>

@@ -6,4 +6,4 @@ output application/java
 "CITY = '" ++ payload.city ++ "', " ++
 "ZIP = '" ++ payload.zipCode ++ "', " ++
 "COUNTY_CODE = '" ++ payload.countyCode ++ "' " ++
-"WHERE TRANS_KEY = '" ++ vars.dbResult.TRANS_KEY[0] ++ "'"
+"WHERE TRANS_KEY = '" ++ vars.dbResult.TRANS_KEY[0]  ++ "'"
