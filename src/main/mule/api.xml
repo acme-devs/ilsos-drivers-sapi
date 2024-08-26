@@ -32,10 +32,10 @@
     <flow name="put:\address-change:application\json:api-config">
         <flow-ref doc:name="global-cics-address-Flow" doc:id="d2cea95d-4f4e-4808-a393-c9a5ae488c62" name="global-cics-address-Flow" />
     </flow>
-    <flow name="put:\id-validation:api-config" doc:id="2e968881-96fb-4d8e-a9b4-6d4ab30137c3">
-        <flow-ref doc:name="put:\id-validation:api-config" doc:id="4b854a81-4548-4b16-a73a-9c1793df4693" name="global-cics-idvalidation-Flow" />
-    </flow>
     <flow name="get:\healthcheck:api-config" doc:id="923941e8-07a8-486b-8145-5fc56764dfae">
         <flow-ref doc:name="get:\healthcheck:api-config" doc:id="8618baaa-65b1-498b-b4c4-4ae0597e9481" name="get:\healthcheck:api-config" />
+    </flow>
+    <flow name="put:\id-validation:application\json:api-config">
+        <flow-ref doc:name="put:\id-validation:api-config" doc:id="4b854a81-4548-4b16-a73a-9c1793df4693" name="global-cics-idvalidation-Flow" />
     </flow>
 </mule>

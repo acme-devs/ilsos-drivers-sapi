@@ -20,8 +20,13 @@
 				</ee:set-variable>
 			</ee:variables>
 		</ee:transform>
+		<logger level="INFO" doc:name="Select query Logger" doc:id="d6f3b734-8001-476d-a539-6aa95e7b0c01" message='#["select query is : " ++ vars.query default ""]'/>
 		<db:select doc:name="select records" config-ref="Database_Config" target="dbResult">
 			<db:sql><![CDATA[#[vars.query]]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"dl": payload.dl,
+	"stateId": payload.stateId
+}]]]></db:input-parameters>
 		</db:select>
 		<logger level="INFO" doc:name="response logger" doc:id="42633666-eb50-4373-855b-aa6cab00c451" message="#[payload]" />
 		<ee:transform doc:name="update query variable" doc:id="eada8027-2814-4fd3-8c6c-b4ef4d9afa1e" >
@@ -33,7 +38,14 @@
 		</ee:transform>
 		<flow-ref doc:name="remove variable flow Reference" doc:id="ec64253a-8ee7-4362-8ecb-6dd2fa8e84ea" name="call-db2-remove-variables-flow"/>
 		<logger level="INFO" doc:name="response logger" doc:id="632ab024-ee76-4a2c-ba9b-5be5775025a8" message="#[output application/json --- if ( payload != null) payload else 'No records found']"/>
-			<error-handler ref="global-error-handler" />
+			<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="c0b94d40-03b1-43e4-824f-077c25761095" >
+			<logger level="INFO" category="app" message="There was an error while calling API service" />
+				<logger level="INFO" category="app" message="#[error.errorMessage.payload]" />
+				<set-variable doc:name="set httpStatus" variableName="httpStatus" value='#[error.errorMessage.attributes.statusCode default 400]'/>
+				<set-variable doc:name="set apiErrorMessage" variableName="apiErrorMessage" value='#[error.errorMessage.payload default error.detailedDescription]'/>
+			</on-error-continue>
+		</error-handler>
     </flow>
     
     

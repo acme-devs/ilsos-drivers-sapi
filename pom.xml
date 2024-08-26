@@ -25,7 +25,7 @@
 		<!-- RAML specification -->
 		<restconnector.api.spec.group>${project.groupId}</restconnector.api.spec.group>
 		<restconnector.api.spec.artifact>ilsos-drivers-sapi</restconnector.api.spec.artifact>
-		<restconnector.api.spec.version>1.0.13</restconnector.api.spec.version>
+		<restconnector.api.spec.version>1.0.19</restconnector.api.spec.version>
 		<mule-ibm-ctg-connector.version>2.3.9</mule-ibm-ctg-connector.version>
 	</properties>
 	<build>

@@ -22,7 +22,7 @@ types:
         description: Identification number
         type: string
         maxLength: 12
-        pattern: ^[0-9]{12}$
+        pattern: ^[0-9A-Z]{12}$
         example: '999123456700'
       dateOfBirth:
         required: true
@@ -145,6 +145,73 @@ types:
           zipCode: '62999'
           countyCode: '234'
           userAcceptedAddreesValidation: true
+  
+  idValidationType:
+    type: object
+    description: Id Validation
+    displayName: Id Validation
+    additionalProperties: false
+    properties:
+      dl:
+        required: false
+        description: Drivers license number
+        type: string
+        maxLength: 12
+        pattern: ^[A-Z]{1}[0-9]{11}$
+        example: Z14247504133    
+      dlIssueDate:
+        required: false
+        description: Drivers license issue date
+        type: string
+        maxLength: 8
+        pattern: ^[0-9]{8}$
+        example: "20261001"
+      stateId:
+        required: false
+        description: Identification number
+        type: string
+        maxLength: 12
+        pattern: ^[0-9]{12}$
+        example: '999123456700'
+      stateIdIssueDate:
+        required: false
+        description: Identification issue date
+        type: string
+        maxLength: 8
+        pattern: ^[0-9]{8}$
+        example: "20261001"
+      dateOfBirth:
+        required: true
+        description: Date of birth
+        type: date-only
+        example: 1970-01-01
+      ssnLast4:
+        required: true
+        description: SSN last 4 digits
+        type: string
+        pattern: ^[0-9]{4}$
+        maxLength: 4
+        example: '2345'
+      tvdl:
+        required: false
+        description: Temporary visitor drivers license holder
+        type: string
+        maxLength: 12
+        example: P14247504999
+    examples:
+      id-validation:
+        displayName: Id Validation Example
+        description: Next is the example when the object is used for the Driver Id Validation process
+        value:
+          dl: P14247504133
+          dlIssueDate: '20261001'
+          stateId: '999123456700'
+          stateIdIssueDate: '20261001'
+          dateOfBirth: 1970-01-01
+          ssnLast4: '2345'
+          tvdl: P14247504999
+          
+
 
 
 traits:

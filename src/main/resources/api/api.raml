@@ -10,7 +10,9 @@ protocols:
   - HTTPS
 uses:
   core: /exchange_modules/0fa744b1-1284-46c5-b23c-0eb98ea787e3/spec-library-core/1.0.27/spec.raml
-  drivers: /exchange_modules/0fa744b1-1284-46c5-b23c-0eb98ea787e3/spec-library-drivers/1.0.24/spec.raml
+  drivers: /exchange_modules/0fa744b1-1284-46c5-b23c-0eb98ea787e3/spec-library-drivers/1.0.29/spec.raml
+
+  
 
 /address-change:
   description:
@@ -32,6 +34,9 @@ uses:
   put:
     displayName: ID validation
     description: Validates the drivers license or state ID
+    body:
+       application/json:
+        type: drivers.idValidationType
     is:
       - drivers.idVerificationQueryParameters
       - core.clientIdEnforcement

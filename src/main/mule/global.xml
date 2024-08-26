@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mulexmlns:db="http://www.mulesoft.org/schema/mule/db"
+<mule
+xmlns:db="http://www.mulesoft.org/schema/mule/db"
 	
 	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
 	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
@@ -40,7 +41,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		</http:listener-connection>
 		
 	</http:listener-config>
-	<import doc:name="Import" doc:id="c35d0573-910e-4106-9768-72ecac4974c8" file="healthcheck.xml" />
+	<import doc:name="Import" doc:id="38096f98-6de5-42a4-aafd-573a415821c0" file="healthcheck.xml" />
 	
 	<configuration-properties doc:name="Configuration properties" file="global-properties.yaml"/>
 	
